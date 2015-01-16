@@ -1,10 +1,14 @@
 # Convertisseur nombre en toutes lettres
 Convertisseur d'un nombre en toutes lettres destiné à être utilisé dans un fichier Excel.
 
+![](https://raw.githubusercontent.com/cyrilschumacher/convertisseur-chiffre-vers-lettre/master/images/excel-cell-function.png)
+
 ## Exemple
 Pour utiliser le convertisseur depuis un fichier Excel, il faut insérer le **fichier BAS** depuis l'interface **Microsoft Visual Basic**.
-En insérant le fichier, la fonction **ChiffreEnLettre** peut être utilisée depuis une cellule.
 
+![](https://raw.githubusercontent.com/cyrilschumacher/convertisseur-chiffre-vers-lettre/master/images/excel-visual-basic-icon.png)
+
+En insérant le fichier, la fonction **ChiffreEnLettre** peut être utilisée depuis une cellule.
 Cette fonction demande en paramètre un nombre (de type **double**) et retourne une chaîne de caractère représentant le nombre.
 
 ```VisualBasic
