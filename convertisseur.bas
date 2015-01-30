@@ -20,15 +20,24 @@
 ''' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ''' SOFTWARE.
 
+Option Explicit
+
 ''' <summary>
 '''     Convertit un nombre en toutes lettres.
 ''' </summary>
 ''' <param name="chiffre">Nombre à convertir.</param>
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Function ChiffreEnLettre(chiffre As Double) As String
+    ''' Obtient le chiffre sans virgule.
+    Dim ChiffreSansVirgule As Variant
     ChiffreSansVirgule = Val(chiffre)
+    
     If ChiffreSansVirgule <> 0 Then
+        ''' Obtient la taille du chiffre.
+        Dim LongueurChiffre As Long
         LongueurChiffre = Len(ChiffreSansVirgule)
+        
+        Dim EnTouteLettre As String
         If LongueurChiffre >= 4 And LongueurChiffre <= 6 Then
             EnTouteLettre = ConvertirMillier(chiffre / 1000)
             EnTouteLettre = EnTouteLettre & Convertir(chiffre Mod 1000)
@@ -43,6 +52,7 @@ Function ChiffreEnLettre(chiffre As Double) As String
         EnTouteLettre = Trim(EnTouteLettre)
     End If
     
+    Dim Virgule As String
     Virgule = ApresVirgule(chiffre)
     If Virgule <> 0 Then
         Virgule = Convertir(CStr(Virgule))
@@ -59,10 +69,17 @@ End Function
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Private Function ApresVirgule(chiffre As Double) As String
     chiffre = Format(chiffre, "###0.00")
+    
+    Dim ChiffreSansVirgule As Variant
     ChiffreSansVirgule = Val(chiffre)
     
+    Dim Virgule As String
     Virgule = Format(chiffre - ChiffreSansVirgule, "###0.00")
+    
+    Dim LongueurVirgule As Long
     LongueurVirgule = Len(Virgule) - 2
+    
+    Dim AVirgule As Variant
     AVirgule = Virgule * (10 ^ LongueurVirgule)
     ApresVirgule = AVirgule
 End Function
@@ -73,7 +90,9 @@ End Function
 ''' <param name="chiffre">Nombre à convertir.</param>
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Private Function Convertir(chiffre As String) As String
+    Dim Longueur As Long
     Longueur = Len(chiffre)
+    
     If Longueur = 1 Then
         Convertir = ConvertirUnite(chiffre)
     ElseIf Longueur = 2 Then
@@ -89,7 +108,9 @@ End Function
 ''' <param name="chiffre">Nombre à convertir.</param>
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Private Function ConvertirUnite(chiffre) As String
+    Dim Unite As Variant
     Unite = Array("", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf")
+    
     ConvertirUnite = Unite(chiffre)
 End Function
 
@@ -99,14 +120,19 @@ End Function
 ''' <param name="chiffre">Nombre à convertir.</param>
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Private Function ConvertirDizaine(chiffre) As String
+    Dim Dizaine As Variant
     Dizaine = Array("dix", "onze", "douze", "treize", "quartoze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf")
+    Dim Dizaine_2 As Variant
     Dizaine_2 = Array("", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante", "quatre-vingt", "quatre-vingt")
     
+    Dim PremierNombre As String
     PremierNombre = Left(chiffre, 1)
+    Dim DeuxiemeNombre As String
     DeuxiemeNombre = Right(chiffre, 1)
     
+    Dim EnTouteLettre As String
     If PremierNombre = 1 Then
-        EnTouteLettre = "" & Dizaine(PremierNombre)
+        EnTouteLettre = " " & Dizaine(DeuxiemeNombre)
     Else
         EnTouteLettre = Dizaine_2(PremierNombre)
         If PremierNombre = 9 Or PremierNombre = 7 Then
@@ -125,14 +151,18 @@ End Function
 ''' <param name="chiffre">Nombre à convertir.</param>
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Private Function ConvertirCentaine(chiffre) As String
+    Dim PremierNombre As String
     PremierNombre = Left(chiffre, 1)
+    
     If PremierNombre <> 0 Then
+        Dim EnTouteLettre As String
         If PremierNombre = 1 Then
             EnTouteLettre = " cent"
         Else
             EnTouteLettre = " " & ConvertirUnite(PremierNombre) & " cents"
         End If
         
+        Dim DeuxiemeNombre As String
         DeuxiemeNombre = Right(chiffre, 2)
         EnTouteLettre = EnTouteLettre & ConvertirDizaine(DeuxiemeNombre)
         ConvertirCentaine = EnTouteLettre
@@ -146,11 +176,17 @@ End Function
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Private Function ConvertirMillier(chiffre) As String
     chiffre = Val(chiffre)
+    
+    Dim LongueurChiffre As Long
     LongueurChiffre = Len(chiffre)
+    
+    Dim PremierNombre As String
     PremierNombre = Left(chiffre, LongueurChiffre)
+    
     If PremierNombre = 1 And LongueurChiffre = 1 Then
         ConvertirMillier = " mille"
     Else
+        Dim EnTouteLettre As String
         If LongueurChiffre = 3 Then
             EnTouteLettre = ConvertirCentaine(PremierNombre)
         ElseIf LongueurChiffre = 2 Then
@@ -161,5 +197,3 @@ Private Function ConvertirMillier(chiffre) As String
         ConvertirMillier = EnTouteLettre & " milles"
     End If
 End Function
-
-
