@@ -1,6 +1,6 @@
 ''' The MIT License (MIT)
 '''
-''' Copyright (c) 2014 Cyril Schumacher.fr
+''' Copyright (c) 2012-2015 Cyril Schumacher.fr
 '''
 ''' Permission is hereby granted, free of charge, to any person obtaining a copy
 ''' of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,37 @@
 Option Explicit
 
 ''' <summary>
+'''     Unités.
+''' </summary>
+Public Unite As Variant
+
+''' <summary>
+'''     Unités étendues.
+''' </summary>
+Public UniteDizaine As Variant
+
+''' <summary>
+'''     Dizaines.
+''' </summary>
+Public Dizaine As Variant
+
+''' <summary>
+'''     Alias de <see cref="ChiffreEnLettre(Double)"/>
+''' </summary>
+''' <param name="chiffre">Nombre à convertir.</param>
+''' <returns>Une chaîne de caractère représentant le nombre.</returns>
+Public Function EnLettre(chiffre As Double) As String
+    EnLettre = ChiffreEnLettre(chiffre)
+End Function
+
+''' <summary>
 '''     Convertit un nombre en toutes lettres.
 ''' </summary>
 ''' <param name="chiffre">Nombre à convertir.</param>
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
-Function ChiffreEnLettre(chiffre As Double) As String
+Public Function ChiffreEnLettre(chiffre As Double) As String
+    Call Initialisation
+
     ''' Obtient le chiffre sans virgule.
     Dim ChiffreSansVirgule As Variant
     ChiffreSansVirgule = Val(chiffre)
@@ -61,6 +87,15 @@ Function ChiffreEnLettre(chiffre As Double) As String
     
     ChiffreEnLettre = UCase(EnTouteLettre)
 End Function
+
+''' <summary>
+'''     Initialisation du module.
+''' </summary>
+Private Sub Initialisation()
+    Unite = Array("", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf")
+    UniteDizaine = Array("dix", "onze", "douze", "treize", "quartoze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf")
+    Dizaine = Array("", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante", "quatre-vingt", "quatre-vingt")
+End Sub
 
 ''' <summary>
 '''     Convertit le nombre situé après la virgule.
@@ -108,9 +143,6 @@ End Function
 ''' <param name="chiffre">Nombre à convertir.</param>
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Private Function ConvertirUnite(chiffre) As String
-    Dim Unite As Variant
-    Unite = Array("", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf")
-    
     ConvertirUnite = Unite(chiffre)
 End Function
 
@@ -120,11 +152,6 @@ End Function
 ''' <param name="chiffre">Nombre à convertir.</param>
 ''' <returns>Une chaîne de caractère représentant le nombre.</returns>
 Private Function ConvertirDizaine(chiffre) As String
-    Dim Dizaine As Variant
-    Dizaine = Array("dix", "onze", "douze", "treize", "quartoze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf")
-    Dim Dizaine_2 As Variant
-    Dizaine_2 = Array("", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante", "quatre-vingt", "quatre-vingt")
-    
     Dim PremierNombre As String
     PremierNombre = Left(chiffre, 1)
     Dim DeuxiemeNombre As String
@@ -132,11 +159,11 @@ Private Function ConvertirDizaine(chiffre) As String
     
     Dim EnTouteLettre As String
     If PremierNombre = 1 Then
-        EnTouteLettre = " " & Dizaine(DeuxiemeNombre)
+        EnTouteLettre = " " & UniteDizaine(DeuxiemeNombre)
     Else
-        EnTouteLettre = Dizaine_2(PremierNombre)
+        EnTouteLettre = Dizaine(PremierNombre)
         If PremierNombre = 9 Or PremierNombre = 7 Then
-            EnTouteLettre = " " & EnTouteLettre & " " & Dizaine(DeuxiemeNombre)
+            EnTouteLettre = " " & EnTouteLettre & " " & UniteDizaine(DeuxiemeNombre)
         Else
             EnTouteLettre = " " & EnTouteLettre & " " & ConvertirUnite(DeuxiemeNombre)
         End If
