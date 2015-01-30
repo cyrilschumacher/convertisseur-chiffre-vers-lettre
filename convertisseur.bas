@@ -47,11 +47,6 @@ Function ChiffreEnLettre(chiffre As Double) As String
     If Virgule <> 0 Then
         Virgule = Convertir(CStr(Virgule))
         EnTouteLettre = Trim(EnTouteLettre) & " " & Virgule
-        If Virgule = "un" Then
-            EnTouteLettre = EnTouteLettre & " CENTIME"
-        Else
-            EnTouteLettre = EnTouteLettre & " CENTIMES"
-        End If
     End If
     
     ChiffreEnLettre = UCase(EnTouteLettre)
@@ -154,7 +149,7 @@ Private Function ConvertirMillier(chiffre) As String
     LongueurChiffre = Len(chiffre)
     PremierNombre = Left(chiffre, LongueurChiffre)
     If PremierNombre = 1 And LongueurChiffre = 1 Then
-        ConvertirMillier = "mille"
+        ConvertirMillier = " mille"
     Else
         If LongueurChiffre = 3 Then
             EnTouteLettre = ConvertirCentaine(PremierNombre)
@@ -166,4 +161,5 @@ Private Function ConvertirMillier(chiffre) As String
         ConvertirMillier = EnTouteLettre & " milles"
     End If
 End Function
+
 
